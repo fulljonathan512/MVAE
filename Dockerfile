@@ -24,7 +24,7 @@ WORKDIR /app
 
 # Install Python dependencies
 # Based on README: torch, torchvision, numpy, scikit-learn, scikit-learn-intelex, matplotlib
-# Add scipy and pillow which are used in train.py
+# Add scipy, pillow and lockfile (needed by Larochelle dataset loader)
 RUN pip install --no-cache-dir \
     torch \
     torchvision \
@@ -33,7 +33,8 @@ RUN pip install --no-cache-dir \
     scikit-learn-intelex \
     matplotlib \
     scipy \
-    pillow
+    pillow \
+    lockfile
 
 # Copy repository into image
 COPY . /app
