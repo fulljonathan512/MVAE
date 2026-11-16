@@ -17,6 +17,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxrender1 \
  && rm -rf /var/lib/apt/lists/*
 
+VOLUME ["/mvae"]
+
 # Set working directory
 WORKDIR /app
 
@@ -36,5 +38,19 @@ RUN pip install --no-cache-dir \
 # Copy repository into image
 COPY . /app
 
-# Default command (can be overridden at docker run)
-CMD ["python", "train.py", "--help"]
+# Default command: run the VAE training on MNIST with your desired hyperparameters.
+# Output directories are redirected into the mounted volume at /mvae.
+CMD [
+  "python", "train.py",
+  "--dataset", "mnist",
+  "--model", "VAE",
+  "--latent-size", "32",
+  "--epochs", "200",
+  "--batch-size", "100",
+  "--lr", "1e-3",
+  "--seed", "777",
+  "--params-dir", "/mvae/trained_parameters",
+  "--results-dir", "/mvae/results",
+  "--curves-dir", "/mvae/curves",
+  "--log-dir", "/mvae/logs"
+]
